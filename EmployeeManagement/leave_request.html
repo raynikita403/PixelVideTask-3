@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Leave Requests</title>
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark teal w-100">
+        <div class="container-fluid">
+            <span class="navbar-text text-white fs-5">Employee Details</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="admin_dashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="salary_details.html">Salary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="report.html">Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="leave_request.html">Leave Request</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="HAO.html">HAO</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <span class="navbar-text text-light d-flex align-items-center">
+                    <span id="adminName"></span>
+                    <i id="profileIcon" class="bi bi-person-circle text-light ms-2 fs-4 clickable"
+                        data-bs-toggle="modal" data-bs-target="#adminProfileModal"></i>
+                    <button class="btn btn-danger fw-bold d-flex align-items-center shadow-sm ms-3" id="logoutBtn">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="card-header py-2 bg-secondary text-light">
+            <h2 class="h5 m-0 fw-bold text-center">Leave Requests</h2>
+        </div>
+        <div id="leaveTableContainer"></div>
+    </div>
+
+    <div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="leaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black text-white">
+                    <h5 class="modal-title " id="leaveModalLabel" >Leave Request Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Employee Name:</strong> <span id="leaveEmpName"></span></p>
+                    <p><strong>Leave Type:</strong> <span id="leaveType"></span></p>
+                    <p><strong>Leave Period:</strong> <span id="leavePeriod"></span></p>
+                    <p><strong>Reason:</strong> <span id="leaveReason"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" id="rejectBtn">
+                        <i class="bi bi-x-circle"></i> Reject
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" id="approveBtn">
+                        <i class="bi bi-check-circle"></i> Approve
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/scripts/userProfile.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log("leave_request js loaded successfully");
+            fetchLeaveRequests();
+
+            function fetchLeaveRequests() {
+                $.ajax({
+                    url: '/API/get_leaves_request.php',
+                    type: 'GET',
+                    success: function (response) {
+                        console.log("Response:", response);
+                        if (response.data && Array.isArray(response.data)) {
+                            let leaveRequests = response.data;
+
+                            let tableContent = ` 
+                      <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>SNO.</th>
+                                <th>Employee Name</th>
+                                <th>Leave Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                            leaveRequests.forEach((request, index) => {
+                                let statusClass = '';
+                                let statusText = request.status;
+
+                                if (statusText === 'Approved') {
+                                    statusClass = 'text-success';
+                                } else if (statusText === 'Rejected') {
+                                    statusClass = 'text-danger';
+                                } else if (statusText === 'Pending') {
+                                    statusClass = '  text-warning';
+                                } else {
+                                    statusClass = 'text-secondary';
+                                }
+                                tableContent += `  
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${request.employee_name}</td>
+                            <td>${request.leave_type}</td>
+                            <td>${request.start_date}</td>
+                            <td>${request.end_date}</td>
+                            <td class="${statusClass}">${statusText}</td>
+                            <td>
+                              <button class="btn btn-primary btn-sm" onclick="viewRequest(${request.id})">
+                                <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                            });
+
+                            tableContent += `</tbody></table>`;
+                            $('#leaveTableContainer').html(tableContent);
+                        } else {
+
+                            console.error("Invalid data format received:", response.data);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error fetching leave requests", error);
+                    }
+                });
+            }
+
+
+            // Function to view leave request details in the modal
+            window.viewRequest = function (id) {
+                $.ajax({
+                    url: '/API/get_leaves_request_details.php',
+                    type: 'GET',
+                    data: { id: id },
+                    success: function (response) {
+                        let request = response.data;
+                        $('#leaveEmpName').text(request.employee_name);
+                        $('#leaveType').text(request.leave_type);
+                        $('#leavePeriod').text(request.start_date + ' to ' + request.end_date);
+                        $('#leaveReason').text(request.reason);
+                        $('#leaveModal').modal('show');
+
+                        $('#approveBtn').click(function () {
+                            updateLeaveStatus(id, 'Approved');
+                        });
+                        $('#rejectBtn').click(function () {
+                            updateLeaveStatus(id, 'Rejected');
+                        });
+                    },
+                    error: function (error) {
+                        console.error("Error fetching leave request details", error);
+                    }
+                });
+            }
+
+            function updateLeaveStatus(id, status) {
+                $.ajax({
+                    url: '/API/update_leave_status.php',
+                    type: 'POST',
+                    data: { id: id, status: status },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status === true) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Leave request ' + status,
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            $('#leaveModal').modal('hide');
+                            fetchLeaveRequests();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Something went wrong',
+                                text: response.message || 'An unknown error occurred.',
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error updating leave status", error);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

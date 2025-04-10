@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="assets/styles/report.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark teal w-100">
+        <div class="container-fluid">
+            <span class="navbar-text text-white fs-5">Employee Details</span>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="admin_dashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="salary_details.html">Salary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="report.html">Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="leave_request.html">Leave Request</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="HAO.html">HAO</a>
+                        </li>
+                    </ul>
+                </div>
+    
+               
+                <span class="navbar-text text-light d-flex align-items-center">
+                    <span id="adminName"></span>
+                    <i id="profileIcon" class="bi bi-person-circle text-light ms-2 fs-4 clickable"
+                        data-bs-toggle="modal" data-bs-target="#adminProfileModal"></i>
+                    <button class="btn btn-danger fw-bold d-flex align-items-center shadow-sm ms-3"
+                        id="logoutBtn">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Profile Modal -->
+    <div class="modal fade" id="adminProfileModal" tabindex="-1" aria-labelledby="adminProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-light" id="adminProfileModalLabel">Admin Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+
+                    <img src="./assets/images/Profile-PNG-Photo.png" height="100" width="100" alt="Profile"
+                        class="rounded-circle mb-3" id="profileImage">
+
+                    <p><strong>Full Name:</strong> <span id="fullName">N/A</span></p>
+                    <p><strong>Role:</strong> <span id="adminRole">N/A</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row mt-3">
+            <div class="col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-body teal">
+                        <h5 class="card-title text-light">Total Employee</h5>
+                        <div class="mb-3">
+                            <p class="card-text text-light ms-2" id="totalEmployees">Loading...</p>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6 col-12 mb-4">
+                                <div class="card h-100 shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Location Based</h5>
+                                        <div class="row text-light" id="locationEmployees">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="col-md-6 col-12 mb-4">
+                                <div class="card h-100 shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Designation Based</h5>
+                                        <div class="row text-light" id="designationEmployees">
+                                         
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        
+
+        <!-- Salary Data -->
+        <div class="row mt-3">
+            <div class="col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-body teal">
+                        <h5 class="card-title text-light">Average Monthly Salary</h5>
+                        <p class="card-text text-light" id="totalAvgMonthSalary">Loading...</p>
+                        <div class="row mt-3">
+                            <div class=" col-md-6 col-12 mb-4">
+                                <div class="card h-100 shadow">
+                                    <div class="card-body ">
+                                        <h5 class="card-title ">Location Based</h5>
+                                        <div class="row" id="locationEmployeesSalaryMonth">
+                                            <!-- Monthly Location salary  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class=" col-md-6 col-12 mb-4">
+                                <div class="card h-100 shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Designation Based</h5>
+                                        <div class="row" id="designationEmployeesSalaryMonth">
+                                            <!-- Monthly Designation salary  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-body teal">
+                        <h5 class="card-title text-light">Average Yearly Salary</h5>
+                        <p class="card-text text-light" id="totalAvgYearSalary">Loading...</p>
+                        <div class="row mt-3">
+                            <div class=" col-md-6 col-12 mb-4">
+                                <div class="card h-100 shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Location Based</h5>
+                                        <div class="row" id="locationEmployeesSalaryYear">
+                                            <!-- Yearly Location salary -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div class=" col-md-6 col-12 mb-4">
+                                <div class="card h-100 shadow">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Designation Based</h5>
+                                        <div class="row" id="designationEmployeesSalaryYear">
+                                            <!-- Yearly Designation salary -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        </div>
+     
+        <div class="row mt-3">
+            <!-- First Chart -->
+            <div class="col-md-6 col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Yearly Salary Chart</h5>
+                        <canvas id="yearlySalaryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Second Chart -->
+            <div class="col-md-6 col-12 mb-4">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Monthly Salary Chart</h5>
+                        <canvas id="monthlySalaryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/scripts/userProfile.js"></script>
+    <script src="./assets/scripts/salary.report.js"></script>
+    <script src="./assets/scripts/chart.js"></script>
+    <script src="assets/scripts/logout.js"></script>
+
+    <script>
+        $.ajax({
+            url: "/API/report.php", 
+            type: "GET", 
+            success: function (data) {
+                if (data) {
+                    $("#totalEmployees").text(data.total_employees);
+                    let locationHtml = `
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>District</th>
+                                    <th>Total Employees</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    
+                    data.locations.forEach(function (location) {
+                        locationHtml += `
+                            <tr>
+                                <td>${location.district}</td>
+                                <td>${location.total_employees}</td>
+                            </tr>
+                        `;
+                    });
+    
+                    locationHtml += `
+                            </tbody>
+                        </table>
+                    `;
+                    $("#locationEmployees").html(locationHtml);
+    
+                    // Designation Employees Table
+                    let designationHtml = `
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Designation</th>
+                                    <th>Total Employees</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    
+                    data.designations.forEach(function (designation) {
+                        designationHtml += `
+                            <tr>
+                                <td>${designation.designation}</td>
+                                <td>${designation.total_employees}</td>
+                            </tr>
+                        `;
+                    });
+    
+                    designationHtml += `
+                            </tbody>
+                        </table>
+                    `;
+                    $("#designationEmployees").html(designationHtml);
+    
+                } else {
+                    console.error("No data received from the server.");
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    </script>
+    
+    
+</body>
+
+</html>

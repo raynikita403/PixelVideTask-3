@@ -1,0 +1,12 @@
+/*Login Register*/    
+form .form-label, form .form-control,form .form-select {
+    font-size: 12px !important;
+}
+tr{
+    font-size: 13px;
+}
+.teal{
+    background-color: teal !important;
+}
+
+

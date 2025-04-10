@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark teal w-100">
+        <div class="container-fluid">
+            <span class="navbar-text text-white fs-5">Employee Details</span>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="admin_dashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="salary_details.html">Salary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="report.html">Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="leave_request.html">Leave Request</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="HAO.html">HAO</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="hoa_list.html">HAO_List</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <span class="navbar-text text-light d-flex align-items-center">
+                    <span id="adminName"></span>
+                    <i id="profileIcon" class="bi bi-person-circle text-light ms-2 fs-4 clickable"
+                        data-bs-toggle="modal" data-bs-target="#adminProfileModal"></i>
+                    <button class="btn btn-danger fw-bold d-flex align-items-center shadow-sm ms-3" id="logoutBtn">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Profile Modal -->
+    <div class="modal fade" id="adminProfileModal" tabindex="-1" aria-labelledby="adminProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-light" id="adminProfileModalLabel">Admin Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+
+                    <img src="./assets/images/Profile-PNG-Photo.png" height="100" width="100" alt="Profile"
+                        class="rounded-circle mb-3" id="profileImage">
+
+                    <p><strong>Full Name:</strong> <span id="fullName">N/A</span></p>
+                    <p><strong>Role:</strong> <span id="adminRole">N/A</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+  
+    
+    <!-- HAO -->
+    <div class="py-4 content-section" id="hoa">
+        <div class="card">
+            <div class="card-header py-2 bg-secondary text-light">
+                <h2 class="h5 m-0 fw-bold text-center">Add New Head Of Account</h2>
+            </div>
+            <div class="card-body">
+                <form id="hoaForm" class="row g-2">
+                    <!-- Name of HOD -->
+                    <div class="row align-items-center mb-2">
+                        <label for="nameOfHOD" class="col-12 col-md-3 form-label fw-semibold">Name Of HOD:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-12 col-md-9">
+                            <select class="form-select form-select-sm" id="nameOfHOD">
+                                <option value="">Select Name Of HOD</option>
+                                <option value="1">Agriculture Dept</option>
+                                <option value="2">Education Dept</option>
+                                <option value="3">Health Dept</option>
+                                <option value="4">Rural Dev. Dept</option>
+                                <option value="5">Urban Planning Dept</option>
+                            </select>
+                            <div id="nameOfHODError" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Year -->
+                    <div class="row align-items-center mb-2">
+                        <label for="budgetYear" class="col-12 col-md-3 form-label fw-semibold">Budget Year:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="budgetYear" placeholder="2000-2002"
+                                class="form-control form-control-sm" />
+                            <div id="budgetYearError" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <!-- Establishment/Scheme -->
+                    <div class="row align-items-center mb-2">
+                        <label for="establishment"
+                            class="col-12 col-md-3 form-label fw-semibold">Establishment/Scheme:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-12 col-md-9">
+                            <select class="form-select form-select-sm" id="establishment">
+                                <option value="">Select Establishment/Scheme</option>
+                                <option value="1">Establishment</option>
+                                <option value="2">Scheme</option>
+                            </select>
+                            <div id="establishmentError" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <!-- Major Head -->
+                    <div class="row align-items-center mb-2">
+                        <label class="col-md-3 col-form-label fw-semibold">Major Head:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-1 mb-md-0">
+                            <input type="text" id="majorHead" placeholder="Major Head"
+                                class="form-control form-control-sm" />
+                            <div id="majorHeadError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control form-control-sm" id="majorHeadDesc" placeholder="Description"
+                                readonly />
+                        </div>
+                    </div>
+
+                    <!-- Sub Major Head -->
+                    <div class="row align-items-center mb-2">
+                        <label class="col-md-3 col-form-label fw-semibold">Sub-Major Head:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-1 mb-md-0">
+                            <input type="text" id="subMajorHead" placeholder="Sub Major Head"
+                                class="form-control form-control-sm" />
+                            <div id="subMajorHeadError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control form-control-sm" id="subMajorHeadDesc" placeholder="Description"
+                                readonly />
+                        </div>
+                    </div>
+
+                    <!-- Minor Head -->
+                    <div class="row align-items-center mb-2">
+                        <label class="col-md-3 col-form-label fw-semibold">Minor Head:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-1 mb-md-0">
+                            <input type="text" id="minorHead" placeholder="Minor Head"
+                                class="form-control form-control-sm" />
+                            <div id="minorHeadError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control form-control-sm" id="minorHeadDesc" placeholder="Description"
+                                readonly />
+                        </div>
+                    </div>
+
+                    <!-- Group Sub Head -->
+                    <div class="row align-items-center mb-2">
+                        <label class="col-md-3 col-form-label fw-semibold">Group Sub Head:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-1 mb-md-0">
+                            <input type="text" id="groupSubHead" placeholder="Group Sub Head"
+                                class="form-control form-control-sm" />
+                            <div id="groupSubHeadError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control form-control-sm" id="groupSubHeadDesc" placeholder="Description"
+                                readonly />
+                        </div>
+                    </div>
+
+                    <!-- Sub Head -->
+                    <div class="row align-items-center mb-2">
+                        <label class="col-md-3 col-form-label fw-semibold">Sub Head:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-1 mb-md-0">
+                            <input type="text" id="subHead" placeholder="Sub Head"
+                                class="form-control form-control-sm" />
+                            <div id="subHeadError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control form-control-sm" id="subHeadDesc" placeholder="Description"
+                                readonly />
+                        </div>
+                    </div>
+
+                    <!-- Detailed Head -->
+                    <div class="row align-items-center mb-2">
+                        <label class="col-md-3 col-form-label fw-semibold">Detailed Head:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-1 mb-md-0">
+                            <input type="text" id="detailedHead" placeholder="Detailed Head"
+                                class="form-control form-control-sm" />
+                            <div id="detailedHeadError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control form-control-sm" id="detailedHeadDesc" placeholder="Description"
+                                readonly />
+                        </div>
+                    </div>
+
+                    <!-- Sub Detailed Head -->
+                    <div class="row align-items-center mb-2">
+                        <label class="col-md-3 col-form-label fw-semibold">Sub Detailed Head:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-1 mb-md-0">
+                            <input type="text" id="subDetailedHead" placeholder="Sub Detailed Head"
+                                class="form-control form-control-sm" />
+                            <div id="subDetailedHeadError" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <input class="form-control form-control-sm" id="subDetailedHeadDesc"
+                                placeholder="Description" readonly />
+                        </div>
+                    </div>
+
+                    <!-- Charged/Voted -->
+                    <div class="row align-items-center mb-3">
+                        <label class="col-12 col-md-3 form-label fw-semibold">Charged/Voted:<span
+                                class="text-danger">*</span></label>
+                        <div class="col-12 col-md-9">
+                            <select class="form-select form-select-sm" id="chargedVoted">
+                                <option value="">Select Charged/Voted</option>
+                                <option>Voted</option>
+                                <option>Charged</option>
+                            </select>
+                            <div id="chargedVotedError" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end gap-2 pt-2">
+                        <button type="submit" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-check-circle"></i> Submit HOA
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/scripts/userProfile.js"></script>
+    <script src="assets/scripts/logout.js"></script>
+    <script src="assets/scripts/hoa.js"></script>
+   
+
+
+</body>
+
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark teal w-100">
+        <div class="container-fluid">
+            <span class="navbar-text text-white fs-5">Employee Details</span>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="admin_dashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="salary_details.html">Salary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="report.html">Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="leave_request.html">Leave Request</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="HAO.html">HAO</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+    
+               
+                <span class="navbar-text text-light d-flex align-items-center">
+                    <span id="adminName"></span>
+                    <i id="profileIcon" class="bi bi-person-circle text-light ms-2 fs-4 clickable"
+                        data-bs-toggle="modal" data-bs-target="#adminProfileModal"></i>
+                    <button class="btn btn-danger fw-bold d-flex align-items-center shadow-sm ms-3"
+                        id="logoutBtn">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </span>
+            </div>
+        </div>
+    </nav>
+    
+    
+
+    <!-- Admin Profile Modal -->
+    <div class="modal fade" id="adminProfileModal" tabindex="-1" aria-labelledby="adminProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-light" id="adminProfileModalLabel">Admin Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+
+                    <img src="./assets/images/Profile-PNG-Photo.png" height="100" width="100" alt="Profile"
+                        class="rounded-circle mb-3" id="profileImage">
+
+                    <p><strong>Full Name:</strong> <span id="fullName">N/A</span></p>
+                    <p><strong>Role:</strong> <span id="adminRole">N/A</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <button class="btn btn-success btn-sm rounded-circle shadow position-fixed bottom-0 end-0 m-4" 
+        data-bs-toggle="modal" data-bs-target="#addEmployeeModal"
+        title="Add Employee">
+            <i class="bi bi-plus fs-5"></i>
+        </button>
+        <div class="table-responsive">
+            <table class="table ">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="employeeTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div class="modal fade" id="addEmployeeModal" enctype="multipart/form-data" tabindex="-1"
+        aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-light" id="addEmployeeModalLabel">Add Employee</h5>
+                    <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEmployeeForm">
+                        <input type="hidden" id="employeeId" name="employeeId">
+
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstname" name="firstname" required>
+                            <div class="text-danger" id="firstnameError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" required>
+                            <div class="text-danger" id="lastnameError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="surname" class="form-label">Surname</label>
+                            <input type="text" class="form-control" id="surname" name="surname">
+                            <div class="text-danger" id="surnameError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                            <div class="text-danger" id="emailError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="doj" class="form-label">Date of Joining</label>
+                            <input type="date" class="form-control" id="doj" name="doj" required>
+                            <div class="text-danger" id="dojError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob" name="dob" required>
+                            <div class="text-danger" id="dobError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="">Choose Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="text-danger" id="genderError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                            <div class="text-danger" id="phoneError"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="working_status_id" class="form-label">Working Status</label>
+                            <select class="form-select" id="working_status_id" name="working_status_id" required>
+                               <option value="">Chosse working_status</option>
+                                <option value="1">Active</option>
+                                <option value="2">On Leave</option>
+                                <option value="3">Resigned</option>
+                                <option value="4">Terminated</option>
+                                <option value="5">Retired</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="designation_id" class="form-label">Designation</label>
+                            <select class="form-select" id="designation_id" name="designation_id" required>
+                                <option value="">Choose Designation</option>
+                                <option value="1">Software Engineer</option>
+                                <option value="2">Project Manager</option>
+                                <option value="3">HR Manager</option>
+                                <option value="4">QA Engineer</option>
+                                <option value="5">UI/UX Designer</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location_id" class="form-label">Location</label>
+                            <select class="form-select" id="location_id" name="location_id" required>
+                                <option value="">Choose Location</option>
+                                <option value="1">Hyderabad</option>
+                                <option value="2">Bangalore</option>
+                                <option value="3">Mumbai</option>
+                                <option value="4">Chennai</option>
+                                <option value="5">Delhi</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gross" class="form-label">Gross Salary</label>
+                            <input type="number" class="form-control" id="gross" name="gross" required>
+                            <div class="text-danger" id="grossError"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Add Employee</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Employee Model -->
+    <div class="modal fade" id="updateEmployeeModal" enctype="multipart/form-data" tabindex="-1"
+    aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-black">
+                <h5 class="modal-title text-light" id="updateEmployeeModalLabel">Update Employee</h5>
+                <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateEmployeeForm">
+                    <div class="col-md-6 col-12">
+                        <p>Emp ID: <span id="id">default</span></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="updatefirstname" name="firstname" required>
+                        <div class="text-danger" id="firstnameError"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="updatelastname" name="lastname" required>
+                        <div class="text-danger" id="lastnameError"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="surname" class="form-label">Surname</label>
+                        <input type="text" class="form-control" id="updatesurname" name="surname">
+                        <div class="text-danger" id="surnameError"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="doj" class="form-label">Date of Joining</label>
+                        <input type="date" class="form-control" id="updatedoj" name="doj" required>
+                        <div class="text-danger" id="dojError"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="updatedob" name="dob" required>
+                        <div class="text-danger" id="dobError"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="updategender" name="gender" required>
+                            <option value="">Choose Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="text-danger" id="genderError"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="updatephone" name="phone" required>
+                        <div class="text-danger" id="phoneError"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="working_status_id" class="form-label">Working Status</label>
+                        <select class="form-select" id="updateworking_status_id" name="working_status_id" required>
+                           <option value="">Chosse working_status</option>
+                            <option value="1">Active</option>
+                            <option value="2">On Leave</option>
+                            <option value="3">Resigned</option>
+                            <option value="4">Terminated</option>
+                            <option value="5">Retired</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="designation_id" class="form-label">Designation</label>
+                        <select class="form-select" id="updatedesignation_id" name="designation_id" required>
+                            <option value="">Choose Designation</option>
+                            <option value="1">Software Engineer</option>
+                            <option value="2">Project Manager</option>
+                            <option value="3">HR Manager</option>
+                            <option value="4">QA Engineer</option>
+                            <option value="5">UI/UX Designer</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location_id" class="form-label">Location</label>
+                        <select class="form-select" id="updatelocation_id" name="location_id" required>
+                            <option value="">Choose Location</option>
+                            <option value="1">Hyderabad</option>
+                            <option value="2">Bangalore</option>
+                            <option value="3">Mumbai</option>
+                            <option value="4">Chennai</option>
+                            <option value="5">Delhi</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gross" class="form-label">Gross Salary</label>
+                        <input type="number" class="form-control" id="updategross" name="gross" required>
+                        <div class="text-danger" id="grossError"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Update Employee</button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Model for View Button -->
+    <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-black text-white">
+                    <h5 class="modal-title" id="employeeModalLabel">Employee Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <p><strong>First Name:</strong> <span id="empFirstName"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Last Name:</strong> <span id="empLastName"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Surname:</strong> <span id="empSurname"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Date of Joining:</strong> <span id="empDOJ"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Date of Birth:</strong> <span id="empDOB"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Gender:</strong> <span id="empGender"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Phone:</strong> <span id="empPhone"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Working Status:</strong> <span id="empWorkingStatus"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Designation:</strong> <span id="empDesignation"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Location:</strong> <span id="empLocation"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Gross Salary:</strong> ₹<span id="empGross"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/scripts/delete_employee.js"></script>
+    <script src="./assets/scripts/add_employee.js"></script>
+    <script src="./assets/scripts/update_employee.js"></script>
+    <script src="assets/scripts/logout.js"></script>
+    <!-- <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> -->
+
+    <script>
+        $(document).ready(function () {
+            let token = localStorage.getItem("token");
+            let username = localStorage.getItem("username");
+            let role = localStorage.getItem("role");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+            $("#adminName").text(username);
+
+            $("#profileIcon").click(function () {
+                $("#fullName").text(username);
+                $("#adminRole").text(role.charAt(0).toUpperCase() + role.slice(1));
+            });
+            // Fetch Employee List
+            window.fetchEmployees = function () {
+                
+                $.ajax({
+                    url: "/API/employee_details.php",
+                    type: "GET",
+                    headers: { "Authorization": `${token}` },
+                    dataType: "json",
+                    success: function (data) {
+                        
+                        let tableBody = "";
+                        $("#employeeTableBody").empty();
+                        data.forEach(employee => {
+                            console.log("Employee Data from API:", employee);
+                            tableBody += ` 
+                            <tr class="shadow-sm bg-white align-middle py-3">
+                           <td class="py-3 px-3">
+                            <img src="/assets/images/Profile-PNG-Photo.png" alt="Profile" class="rounded-circle me-2" width="30" height="30">
+                            ${employee.firstname} ${employee.lastname}
+                            </td>
+                            <td class="py-3 px-3">
+                           <div class="d-flex flex-md-row flex-column gap-2">
+                        <button class='btn btn-warning btn-sm edit-btn shadow' data-id="${employee.id}" 
+                                data-bs-toggle="modal" data-bs-target="#updateEmployeeModal" >
+                            <i class="bi bi-pencil-square"></i> 
+                        </button>
+                        <button class='btn btn-danger btn-sm delete-btn shadow' data-id="${employee.id}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <button class='btn btn-info btn-sm view-btn shadow' data-id="${employee.id}" 
+                                data-bs-toggle="modal" data-bs-target="#employeeModal">
+                            <i class="bi bi-eye"></i> 
+                        </button>
+                    </div>
+                     </td>
+                    </tr>`;
+                        });
+                        $("#employeeTableBody").html(tableBody);
+                    },
+                    error: function (xhr) {
+                        console.error("Error fetching employees:", xhr.responseText);
+                    }
+                });
+            }
+
+            fetchEmployees();
+
+            //view btn
+            $(document).on("click", ".view-btn", function () {
+                let employeeId = $(this).data("id");
+                console.log("Clicked Employee ID:", employeeId);  
+
+                if (!employeeId || employeeId === "undefined") {
+                    alert("Invalid Employee ID");
+                    return;
+                }
+
+                $.ajax({
+                    url: `/API/employee_details_id.php?id=${employeeId}`,
+                    type: "GET",
+                    headers: { "Authorization": `${token}` },
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log("Employee Data:", data);
+
+                        if (data.status === true) {
+                            $("#empFirstName").text(data.employee.firstname);
+                            $("#empLastName").text(data.employee.lastname);
+                            $("#empSurname").text(data.employee.surname || "N/A");
+                            $("#empDOJ").text(data.employee.doj);
+                            $("#empDOB").text(data.employee.dob);
+                            $("#empGender").text(data.employee.gender);
+                            $("#empPhone").text(data.employee.phone);
+                            $("#empWorkingStatus").text(data.employee.working_status);
+                            $("#empDesignation").text(data.employee.designation_name);
+                            $("#empLocation").text(data.employee.location);
+                            $("#empGross").text(data.employee.gross);
+
+
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("Error fetching employee details:", xhr.responseText);
+                    }
+                });
+            });
+
+
+
+        });
+    </script>
+
+
+
+</body>
+
+</html>

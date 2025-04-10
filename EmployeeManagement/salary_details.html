@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark teal w-100">
+        <div class="container-fluid">
+            <span class="navbar-text text-white fs-5">Employee Details</span>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="admin_dashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="salary_details.html">Salary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="report.html">Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="leave_request.html">Leave Request</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="HAO.html">HAO</a>
+                        </li>
+                    </ul>
+                </div>
+    
+               
+                <span class="navbar-text text-light d-flex align-items-center">
+                    <span id="adminName"></span>
+                    <i id="profileIcon" class="bi bi-person-circle text-light ms-2 fs-4 clickable"
+                        data-bs-toggle="modal" data-bs-target="#adminProfileModal"></i>
+                    <button class="btn btn-danger fw-bold d-flex align-items-center shadow-sm ms-3"
+                        id="logoutBtn">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Profile Modal -->
+    <div class="modal fade" id="adminProfileModal" tabindex="-1" aria-labelledby="adminProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-light" id="adminProfileModalLabel">Admin Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+
+                    <img src="./assets/images/Profile-PNG-Photo.png" height="100" width="100" alt="Profile"
+                        class="rounded-circle mb-3" id="profileImage">
+
+                    <p><strong>Full Name:</strong> <span id="fullName">N/A</span></p>
+                    <p><strong>Role:</strong> <span id="adminRole">N/A</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="table-responsive mt-2">
+            <table class="table ">
+                <thead class="table-dark">
+                    <tr class="text-center">
+                        <th>Employee Name</th>
+                        <th>Designation</th>
+                        <th>Gross</th>
+                        <th>Deduction</th>
+                        <th>Net</th>
+                        <th>Status</th>
+                        <th>Paid_on</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="employeeTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- update Salary Modal -->
+    <div class="modal fade" id="updateSalaryModal" tabindex="-1" aria-labelledby="addSalaryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-light" id="updateSalaryModalLabel">Update Salary</h5>
+                    <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateSalaryForm">
+                        <div class="mb-3">
+                            <div class="col-md-6 col-12">
+                                <p>Emp ID: <span id="id">default</span></p>
+                            </div>
+                            <label for="month" class="form-label">Month</label>
+                            <select class="form-select" id="month"  name="month" disabled >
+                                <option value="">Select Month</option>
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                            <div class="text-danger" id="monthError"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Year</label>
+                            <input type="number" class="form-control" id="year" name="year" disabled>
+                            <div class="text-danger" id="yearError"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="gross_salary" class="form-label">Gross Salary</label>
+                            <input type="number" class="form-control" id="gross_salary" name="gross_salary" required>
+                            <div class="text-danger" id="grossSalaryError"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deduction" class="form-label">Deductions</label>
+                            <input type="number" class="form-control" id="deduction" name="deduction">
+                            <div class="text-danger" id="deductionError"></div>
+                        </div>
+
+                        <!-- <div class="mb-3">
+                            <label for="net_salary" class="form-label">Net Salary</label>
+                            <input type="number" class="form-control" id="net_salary" name="net_salary" required>
+                            <div class="text-danger" id="netSalaryError"></div>
+                        </div> -->
+
+                        <h5 class="mt-4">Salary Components</h5>
+
+                        <div class="mb-3">
+                            <label for="basic" class="form-label">Basic</label>
+                            <input type="number" class="form-control" id="basic" name="basic">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="hra" class="form-label">HRA</label>
+                            <input type="number" class="form-control" id="hra" name="hra">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="da" class="form-label">DA</label>
+                            <input type="number" class="form-control" id="da" name="da">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pf" class="form-label">PF</label>
+                            <input type="number" class="form-control" id="pf" name="pf">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bonus" class="form-label">CA</label>
+                            <input type="number" class="form-control" id="ca" name="ca">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bonus" class="form-label">TDS</label>
+                            <input type="number" class="form-control" id="tds" name="tds">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bonus" class="form-label">Bonus</label>
+                            <input type="number" class="form-control" id="bonus" name="bonus">
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Update Salary</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model for View Button -->
+    <!-- Employee Modal -->
+    <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-black text-white">
+                    <h5 class="modal-title" id="employeeModalLabel">Employee Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <p><strong>First Name:</strong> <span id="empFirstName"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Last Name:</strong> <span id="empLastName"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Working Status:</strong> <span id="empWorkingStatus"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Designation:</strong> <span id="empDesignation"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Gross Salary:</strong> ₹<span id="empGross"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Deduction:</strong> <span id="empDeduction"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Net:</strong> <span id="empNet"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Paid On:</strong> <span id="empPaid_on"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Year:</strong> <span id="empYear"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <p><strong>Month:</strong> <span id="empMonth"></span></p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <button class="btn btn-success salary-component-btn" id="openSalaryComponentModal">Salary
+                                Component</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-id="${employee.id}"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Salary Components Modal -->
+    <div class="modal fade" id="salaryComponentModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="salaryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title text-light" id="salaryModalLabel">Salary Components</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>Basic:</strong> ₹<span id="basicSalary"></span>
+                            </div>
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>HRA:</strong> ₹<span id="hraSalary"></span>
+                            </div>
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>CA:</strong> ₹<span id="caSalary"></span>
+                            </div>
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>Medical Allowance:</strong> ₹<span id="medicalAllowance"></span>
+                            </div>
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>Bonus:</strong> ₹<span id="bonusSalary"></span>
+                            </div>
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>TDS:</strong> ₹<span id="tdsSalary"></span>
+                            </div>
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>DA:</strong> ₹<span id="daSalary"></span>
+                            </div>
+                            <div class="col-md-6 col-12 mb-2">
+                                <strong>PF:</strong> ₹<span id="pfSalary"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/scripts/delete_employee.js"></script>
+    <script src="assets/scripts/edit_employees.js"></script>
+    <script src="./assets/scripts/add_employee.js"></script>
+    <script src="./assets/scripts/update_salary.js"></script>
+    <script src="assets/scripts/logout.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#openSalaryComponentModal").on("click", function () {
+                var employeeModal = new bootstrap.Modal(document.getElementById("employeeModal"));
+                employeeModal.hide();
+
+                var salaryComponentModal = new bootstrap.Modal(document.getElementById("salaryComponentModal"));
+                salaryComponentModal.show();
+
+            });
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            let token = localStorage.getItem("token");
+            let username = localStorage.getItem("username");
+            let role = localStorage.getItem("role");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+            $("#adminName").text(username);
+
+            $("#profileIcon").click(function () {
+                $("#fullName").text(username);
+                $("#adminRole").text(role.charAt(0).toUpperCase() + role.slice(1));
+            });
+            // Fetch Employee List
+            window.fetchEmployees = function () {
+
+                $.ajax({
+                    url: "/API/employee_details.php",
+                    type: "GET",
+                    headers: { "Authorization": `${token}` },
+                    dataType: "json",
+                    success: function (data) {
+
+                        let tableBody = "";
+                        $("#employeeTableBody").empty();
+                        data.forEach(employee => {
+                            console.log("Employee Data from API:", employee);
+                            tableBody += ` 
+                            <tr class="shadow-sm bg-white align-middle py-3 text-center">
+                           <td class="py-3 px-3">
+                            <img src="/assets/images/Profile-PNG-Photo.png" alt="Profile" class="rounded-circle me-2" width="30" height="30">
+                            ${employee.firstname} ${employee.lastname}
+                            </td>
+                           <td class="py-3 px-3">
+                            ${employee.designation}
+                        </td>
+                         <td class="py-3 px-3">
+                            ${employee.gross}
+                        </td>
+                         <td class="py-3 px-3">
+                              ${employee.deduction}
+                        </td>
+                         <td class="py-3 px-3">
+                            ${employee.net}
+                        </td>
+                         <td class="py-3 px-3">
+                             ${employee.working_status}
+                        </td>
+                        <td class="py-3 px-3">
+                             ${employee.paid_on}
+                        </td>
+                         <td class="py-3 px-3">
+                           <div class="d-flex flex-md-row flex-column gap-2">
+                        <button class='btn btn-warning btn-sm edit-salary-btn shadow' data-id="${employee.id}" 
+                                data-bs-toggle="modal" data-bs-target="#updateSalaryModal">
+                            <i class="bi bi-pencil-square"></i> 
+                        </button>
+                        <button class='btn btn-danger btn-sm delete-btn shadow' data-id="${employee.id}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <button class='btn btn-info btn-sm view-btn shadow' data-id="${employee.id}" 
+                                data-bs-toggle="modal" data-bs-target="#employeeModal">
+                            <i class="bi bi-eye"></i> 
+                        </button>
+                    </div>
+                     </td>
+                           
+                    </tr>`;
+                        });
+                        $("#employeeTableBody").html(tableBody);
+                    },
+                    error: function (xhr) {
+                        console.error("Error fetching employees:", xhr.responseText);
+                    }
+                });
+            }
+
+            fetchEmployees();
+
+
+            //view btn
+            $(document).on("click", ".view-btn", function () {
+                let employeeId = $(this).data("id");
+                console.log("Clicked Employee ID:", employeeId);
+
+                if (!employeeId || employeeId === "undefined") {
+                    alert("Invalid Employee ID");
+                    return;
+                }
+                
+                $("#openSalaryComponentModal").data("id", employeeId);
+                // $("#addSalaryForm").data("id", employeeId);
+
+                console.log("Employee ID set in addSalaryForm:", $("#addSalaryForm").data("id"));
+                $.ajax({
+                    url: `/API/employee_details_id.php?id=${employeeId}`,
+                    type: "GET",
+                    headers: { "Authorization": `${token}` },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log("Employee Data:", data);
+
+                        if (data.status === true) {
+                            $("#empFirstName").text(data.employee.firstname);
+                            $("#empLastName").text(data.employee.lastname);
+                            $("#empWorkingStatus").text(data.employee.working_status);
+                            $("#empDesignation").text(data.employee.designation_name);
+                            $("#empGross").text(data.employee.gross)
+                            $("#empDeduction").text(data.employee.deduction);
+                            $("#empNet").text(data.employee.net);
+                            $("#empPaid_on").text(data.employee.paid_on);
+                            $("#empYear").text(data.employee.year);
+                            $("#empMonth").text(data.employee.month);
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("Error fetching employee details:", xhr.responseText);
+                    }
+                });
+            });
+            // View Salary Components Button Click
+            $(document).on("click", ".salary-component-btn", function () {
+                console.log("salary_component is working");
+                let employeeId = $(this).data("id");
+                console.log("Clicked Employee ID for Salary Components:", employeeId);
+
+                if (!employeeId || employeeId === "undefined") {
+                    alert("Invalid Employee ID");
+                    return;
+                }
+
+                $.ajax({
+                    url: `/API/salary_component_based_on_id.php?id=${employeeId}`,
+                    type: "GET",
+                    headers: { "Authorization": `${token}` },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log("Salary Components Data:", data);
+
+                        if (data.status === true) {
+                            if (!data.salary_components || !Array.isArray(data.salary_components) || data.salary_components.length === 0) {
+                                console.warn("No salary data found for this employee.");
+
+                                $("#basicSalary").text("N/A");
+                                $("#hraSalary").text("N/A");
+                                $("#caSalary").text("N/A");
+                                $("#medicalAllowance").text("N/A");
+                                $("#bonusSalary").text("N/A");
+                                $("#tdsSalary").text("N/A");
+                                $("#daSalary").text("N/A");
+                                $("#pfSalary").text("N/A");
+
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "No Salary Data Found",
+                                    text: "This employee does not have salary details available.",
+                                });
+                                return;
+                            }
+                            let salaryComponents = data.salary_components;
+                            let salaryData = {};
+
+                            salaryComponents.forEach(item => {
+                                let componentName = item.salary_component.trim().toLowerCase();
+                                let amount = item.amount.trim();
+                                console.log(data.salary_components);
+                                switch (componentName) {
+                                    case "basic":
+                                        salaryData.basic = amount;
+                                        break;
+                                    case "hra":
+                                        salaryData.hra = amount;
+                                        break;
+                                    case "ca":
+                                        salaryData.ca = amount;
+                                        break;
+                                    case "medical allowance":
+                                        salaryData.medicalAllowance = amount;
+                                        break;
+                                    case "bonus":
+                                        salaryData.bonus = amount;
+                                        break;
+                                    case "tds":
+                                        salaryData.tds = amount;
+                                        break;
+                                    case "da":
+                                        salaryData.da = amount;
+                                        break;
+                                    case "pf":
+                                        salaryData.pf = amount;
+                                        break;
+                                    default:
+                                        console.warn("Unknown Salary Component:", componentName);
+                                }
+                            });
+
+                            $("#basicSalary").text(salaryData.basic || "N/A");
+                            $("#hraSalary").text(salaryData.hra || "N/A");
+                            console.log("HRS",salaryData.hra);
+                            $("#caSalary").text(salaryData.ca || "N/A");
+                            $("#medicalAllowance").text(salaryData.medicalAllowance || "N/A");
+                            $("#bonusSalary").text(salaryData.bonus || "N/A");
+                            $("#tdsSalary").text(salaryData.tds || "N/A");
+                            $("#daSalary").text(salaryData.da || "N/A");
+                            $("#pfSalary").text(salaryData.pf || "N/A");
+
+                        } else {
+                            alert(data.message);
+                        }
+
+                    },
+                    error: function (xhr) {
+                        console.error("Error fetching salary components:", xhr.responseText);
+                    }
+                });
+            });
+        });
+
+        //update Salary
+
+        $(document).on("click", ".edit-salary-btn", function () {
+            let employeeId = $(this).attr("data-id");
+            console.log("after clicking edit btn", employeeId);
+            console.log("edit-salary-btn-clicked");
+
+
+            if (!employeeId) {
+                Swal.fire("Error!", "Invalid Employee ID", "error");
+                return;
+            }
+
+            let employeeDetailsAPI = $.ajax({
+                url: `/API/employee_details_id.php?id=${employeeId}`,
+                type: "GET",
+                dataType: "json"
+            });
+
+            let salaryComponentsAPI = $.ajax({
+                url: `/API/salary_component_based_on_id.php?id=${employeeId}`,
+                type: "GET",
+                dataType: "json"
+            });
+
+            $.when(employeeDetailsAPI, salaryComponentsAPI).done(function (empResponse, salResponse) {
+                let empData = empResponse[0];
+                let salData = salResponse[0];
+                console.log("employee_details", empData);
+                console.log("salary_component", salData);
+                console.log("need to show in modal",empData.employee.id);
+                if (empData.status === true) {
+                    $("#id").text(empData.employee.id);
+                    $("#month").val(empData.employee.month);
+                    $("#year").val(empData.employee.year);
+                    $("#gross_salary").val(empData.employee.gross);
+                    $("#deduction").val(empData.employee.deduction);
+                    // $("#net_salary").val(empData.employee.net);
+                } else {
+                    Swal.fire("Error!", empData.message, "error");
+                }
+
+                if (salData.status === true) {
+                    let salaryComponents = salData.salary_components; 
+                    salaryComponents.forEach(component => {
+                        switch (component.salary_component) {
+                            case "Basic":
+                                $("#basic").val(component.amount || '');
+                                break;
+                            case "HRA":
+                                $("#hra").val(component.amount || '');
+                                break;
+                            case "DA":
+                                $("#da").val(component.amount || '');
+                                break;
+                            case "PF":
+                                $("#pf").val(component.amount || '');
+                                break;
+                            case "Bonus":
+                                $("#bonus").val(component.amount || '');
+                                break;
+                            case "CA":
+                                $("#ca").val(component.amount || '');
+                                break;
+                            case "TDS":
+                                $("#tds").val(component.amount || '');
+                                break;  
+                            case "MedicalAllowance":
+                            $("#medicalAllowance").val(component.amount || '');
+                                break;  
+                        }
+                    });
+                } else {
+                    Swal.fire("Error!", salData.message, "error");
+                }
+
+            }).fail(function () {
+                Swal.fire("Error!", "Failed to fetch data from one or both APIs.", "error");
+            });
+
+        })
+
+
+    </script>
+
+
+
+</body>
+
+</html>

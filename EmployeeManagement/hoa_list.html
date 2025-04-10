@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/styles/hoa_list.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark teal w-100">
+        <div class="container-fluid">
+            <span class="navbar-text text-white fs-5">Employee Details</span>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="admin_dashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="salary_details.html">Salary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="report.html">Report</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="leave_request.html">Leave Request</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-semibold" href="HAO.html">HAO</a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <span class="navbar-text text-light d-flex align-items-center">
+                    <span id="adminName"></span>
+                    <i id="profileIcon" class="bi bi-person-circle text-light ms-2 fs-4 clickable"
+                        data-bs-toggle="modal" data-bs-target="#adminProfileModal"></i>
+                    <button class="btn btn-danger fw-bold d-flex align-items-center shadow-sm ms-3" id="logoutBtn">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Profile Modal -->
+    <div class="modal fade" id="adminProfileModal" tabindex="-1" aria-labelledby="adminProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-black">
+                    <h5 class="modal-title text-light" id="adminProfileModalLabel">Admin Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="./assets/images/Profile-PNG-Photo.png" height="100" width="100" alt="Profile"
+                        class="rounded-circle mb-3" id="profileImage">
+                    <p><strong>Full Name:</strong> <span id="fullName">N/A</span></p>
+                    <p><strong>Role:</strong> <span id="adminRole">N/A</span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HAO -->
+    <!-- search form -->
+    <div class="container mt-2  w-75 " style="display: none;">
+        <form id="hoaSearch" class="row g-2">
+            <div class="col-12 col-md-2">
+                <select class="form-select" id="department" name="department" required>
+                    <option value="">Select Name Of HOD</option>
+                    <option value="1">Agriculture Dept</option>
+                    <option value="2">Education Dept</option>
+                    <option value="3">Health Dept</option>
+                    <option value="4">Rural Dev. Dept</option>
+                    <option value="5">Urban Planning Dept</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-2">
+                <select class="form-select" id="scheme" name="scheme" required>
+                    <option value="">Select Establishment/Scheme</option>
+                    <option value="1">Establishment</option>
+                    <option value="2">Scheme</option>
+
+                </select>
+            </div>
+
+            <div class=" col-12 col-md-6">
+                <div class="row g-1">
+                    <div class="col-2"> <input type="text" class="form-control mb-2" placeholder="xxxx" name="file1"
+                            id="file1"></div>
+                    <div class="col-2"> <input type="text" class="form-control mb-2" placeholder="xx" name="file2"
+                            id="file2"></div>
+                    <div class="col-2"> <input type="text" class="form-control mb-2" placeholder="xxx" name="file3"
+                            id="file3"></div>
+                    <div class="col-1"> <input type="text" class="form-control mb-2" placeholder="xx" name="file4"
+                            id="file4"></div>
+                    <div class="col-1"> <input type="text" class="form-control mb-2" placeholder="xx" name="file5"
+                            id="file5"></div>
+                    <div class="col-2"> <input type="text" class="form-control mb-2" placeholder="xxx" name="file6"
+                            id="file6"></div>
+                    <div class="col-2"> <input type="text" class="form-control mb-2" placeholder="xxx" name="file7"
+                            id="file6"></div>
+                </div>
+            </div>
+
+
+            <div class=" col-12 col-md-2 ">
+                <button type="button" id="searchBtn" class="btn btn-success btn-sm">
+                    Search
+                </button>
+
+            </div>
+        </form>
+    </div>
+
+
+
+    <!-- table -->
+    <div class="container mt-2">
+        <div class="card-header py-2 bg-secondary text-light">
+            <h2 class="h5 m-0 fw-bold text-center">HOD Budget Details</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="text-light bg-black text-center">
+                        <th>Department(HOD)</th>
+                        <th>Est Scheme Description</th>
+                        <th>HOA</th>
+                        <th>HOA Tier</th>
+                        <th>Year</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="hoaTableBody">
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- View Modal -->
+        <div class="modal fade" id="hoaModal" tabindex="-1" aria-labelledby="hoaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header teal text-light">
+                        <h5 class="modal-title" id="hoaModalLabel">HOA Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th class="text-center">Major Head</th>
+                                        <td id="majorHead" class="text-center"></td>
+                                        <th class="text-center">Sub Major Head</th>
+                                        <td id="subMajorHead" class="text-center"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Minor Head</th>
+                                        <td id="minorHead" class="text-center"></td>
+                                        <th class="text-center">Group Sub Head</th>
+                                        <td id="groupSubHead" class="text-center"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Sub Head</th>
+                                        <td id="subHead" class="text-center"></td>
+                                        <th class="text-center">Detailed Head</th>
+                                        <td id="detailedHead" class="text-center"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Sub Detailed Head</th>
+                                        <td id="subDetailedHead" class="text-center"></td>
+                                        <th class="text-center">Department</th>
+                                        <td id="viewDepartment" class="text-center"></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Scheme Type</th>
+                                        <td id="schemeType" class="text-center"></td>
+                                        <th class="text-center">Budget Year</th>
+                                        <td id="budgetYear" class="text-center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/scripts/userProfile.js"></script>
+    <script src="assets/scripts/hoa_list_search.js"></script>
+    <script src="assets/scripts/logout.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/API/hoa_list.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log("Data received:", response);
+                    if (response.status === 'success') {
+                        let hoaData = response.data;
+                        let tableBody = $('#hoaTableBody');
+
+                        hoaData.forEach(function (item) {
+                            let row = `<tr>
+                            <td class="text-center">${item.hod_description}</td>
+                            <td class="text-center">${item.estscheme_description}</td>
+                            <td class="text-center">${item.hoa}</td>
+                            <td class="text-center">${item.hoa_tier}</td>
+                            <td class="text-center">${item.year}</td>
+                            <td class="text-center">${item.amount}</td>
+                            <td class="text-center">${item.status}</td>
+                            <td class="text-center"><button class="btn btn-info btn-sm view-hoa-btn"  data-bs-toggle="modal" 
+                            data-bs-target="#hoaModal" data-id="${item.id}"><i class="bi bi-eye"></i></button></td>
+                        </tr>`;
+                            tableBody.append(row);
+                        });
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                    alert('Something went wrong while fetching data.');
+                }
+            });
+
+            // View HOA details based on ID
+            $(document).ready(function () {
+    $(document).on("click", ".view-hoa-btn", function () {
+        console.log("View button for HOA clicked");
+
+        let hoaId = $(this).data("id");
+        console.log("Clicked HOA ID:", hoaId);
+
+        if (!hoaId || hoaId === "undefined") {
+            alert("Invalid HOA ID");
+            return;
+        }
+
+        $.ajax({
+            url: "/API/hoa_list_details.php",
+            type: "GET",
+            dataType: "json",
+            data: { id: hoaId },
+            success: function (response) {
+                console.log("Data from hoa_list_details:", response);
+
+                if (response.status === true && response.data) {
+                    const hoa = response.data;
+                  
+                    $("#majorHead").text(hoa.mjh);
+                    $("#subMajorHead").text(hoa.smjh);
+                    $("#minorHead").text(hoa.mnh);
+                    $("#groupSubHead").text(hoa.gsh);
+                    $("#subHead").text(hoa.sh);
+                    $("#detailedHead").text(hoa.dh);
+                    $("#subDetailedHead").text(hoa.sdh);
+                    $("#viewDepartment").text(hoa.hod_description);
+                    $("#schemeType").text(hoa.estscheme_description);
+                    $("#budgetYear").text(hoa.year);
+
+                    $("#hoaModal").modal("show");
+                } else {
+                    alert(response.message || "HOA not found.");
+                }
+            },
+            error: function (xhr) {
+                console.error("Error fetching HOA details:", xhr.responseText);
+                alert("Failed to fetch HOA data. Check console for details.");
+            }
+        });
+    });
+});
+
+
+
+
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
