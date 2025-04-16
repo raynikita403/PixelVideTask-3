@@ -1,0 +1,41 @@
+*{
+    font-family: sans-serif;
+}
+
+.custom-navbar {
+    min-height: 100vh;
+}
+
+
+@media (max-width: 768px) {
+    .custom-navbar {
+        min-height: 30vh !important; 
+
+    }
+    .custom-toggler{
+        margin-left: 30px;
+    }
+}
+/*Table*/
+tr{
+    font-size: 12px;
+}
+.movieflix{
+    font-weight: bold !important;
+    font-family: sans-serif;
+    letter-spacing: 0cap;
+}
+
+/*Forms*/
+label,.form-,input::placeholder{
+    font-size: 13px;
+}
+.login-register-bg{
+    background-image: url(/assets/images/banner.jpg);
+}
+.form-bg{
+    background-color: rgba(0, 0, 0, 0.628);
+}
+.login-register-width{
+    width: 400px;
+}
